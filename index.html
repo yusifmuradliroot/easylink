@@ -1,452 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yusf'easylink</title>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EasyLink — Yusf</title>
+  <meta name="description" content="Yusf's personal link hub — cox az gulmeli, birazda trajedik." />
 
-        :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #12121a;
-            --bg-card: rgba(255, 255, 255, 0.05);
-            --bg-card-hover: rgba(255, 255, 255, 0.1);
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0b0;
-            --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
+  <!-- Inline Inter font fallback + system fonts for speed -->
+  <style>
+    /* === SYSTEM-FIRST TYPOGRAPHY === */
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400 700;
+      src: local('Inter'), local('Inter-Regular'),
+           url(https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfMZs.woff2) format('woff2');
+      font-display: swap;
+    }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 1rem;
-            position: relative;
-            overflow-x: hidden;
-        }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+  </style>
 
-        /* Animated Background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
-            animation: bgRotate 30s linear infinite;
-            z-index: -1;
-        }
+  <style>
+    /* === RESET & VARIABLES === */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
 
-        @keyframes bgRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+    :root {
+      --bg: #0a0a0f;
+      --card-bg: rgba(18, 18, 26, 0.6);
+      --card-hover: rgba(102, 126, 234, 0.15);
+      --text: #ffffff;
+      --text-muted: #a0a0b0;
+      --border: rgba(255, 255, 255, 0.1);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --gradient: linear-gradient(135deg, #667eea, #764ba2);
+    }
 
-        .container {
-            max-width: 480px;
-            width: 100%;
-            text-align: center;
-        }
+    /* === BASE STYLES === */
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      margin: 0;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
 
-        /* Profile Section */
-        .profile-section {
-            margin-bottom: 2.5rem;
-        }
+    /* Subtle animated background (no extra DOM) */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: -10%;
+      background:
+        radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.07) 0%, transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.07) 0%, transparent 40%);
+      animation: rotate 40s linear infinite;
+      z-index: -1;
+      pointer-events: none;
+    }
 
-        .profile-image-container {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 1.5rem;
-            position: relative;
-        }
+    @keyframes rotate {
+      to { transform: rotate(360deg); }
+    }
 
-        .profile-image {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            background: var(--accent-gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: white;
-            box-shadow: var(--shadow);
-        }
+    .container {
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+    }
 
-        .profile-name {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+    /* === PROFILE === */
+    .avatar {
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 1.4rem;
+      border-radius: 50%;
+      background: var(--gradient);
+      display: grid;
+      place-content: center;
+      font-size: 2.4rem;
+      color: white;
+      box-shadow: var(--shadow);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+    }
 
-        .profile-bio {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            font-weight: 400;
-            line-height: 1.6;
-        }
+    .name {
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin: 0 0 0.6rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
 
-        /* Links Section */
-        .links-section {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
+    .bio {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
 
-        .link-card {
-            display: flex;
-            align-items: center;
-            padding: 1rem 1.5rem;
-            background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            text-decoration: none;
-            color: var(--text-primary);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
+    /* === LINKS === */
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
 
-        .link-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-card-hover);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
+    .link {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.4rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      text-decoration: none;
+      color: var(--text);
+      transition: transform 0.25s ease, border-color 0.25s ease;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+    }
 
-        .link-card:hover {
-            transform: translateY(-3px) scale(1.02);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.2);
-        }
+    .link:hover {
+      transform: translateY(-2px) scale(1.015);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
 
-        .link-card:hover::before {
-            opacity: 1;
-        }
+    .icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: grid;
+      place-content: center;
+      font-size: 1.4rem;
+      margin-right: 1rem;
+      font-weight: bold;
+    }
 
-        .link-icon {
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            font-size: 1.5rem;
-            margin-right: 1rem;
-            position: relative;
-            z-index: 1;
-        }
+    /* Platform-specific icon colors (using emoji or minimal SVG if needed) */
+    .instagram { background: linear-gradient(45deg, #f09433, #bc1888); }
+    .tiktok     { background: linear-gradient(45deg, #000, #fe2c55); }
+    .telegram   { background: linear-gradient(45deg, #0088cc, #0066aa); }
+    .discord    { background: linear-gradient(45deg, #5865f2, #4752c4); }
 
-        .link-icon.instagram {
-            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-        }
+    .info { flex: 1; text-align: left; }
+    .title { font-weight: 600; font-size: 1.05rem; }
+    .handle { color: var(--text-muted); font-size: 0.85rem; }
 
-        .link-icon.tiktok {
-            background: linear-gradient(45deg, #000000, #25f4ee, #fe2c55);
-        }
+    .arrow {
+      opacity: 0.7;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
 
-        .link-icon.telegram {
-            background: linear-gradient(45deg, #0088cc, #0066aa);
-        }
+    .link:hover .arrow {
+      transform: translateX(4px);
+      opacity: 1;
+    }
 
-        .link-icon.discord {
-            background: linear-gradient(45deg, #5865f2, #4752c4);
-        }
+    /* === FOOTER === */
+    .footer {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      padding-top: 1.8rem;
+      border-top: 1px solid var(--border);
+    }
 
-        .link-text {
-            flex: 1;
-            text-align: left;
-            position: relative;
-            z-index: 1;
-        }
+    /* === RESPONSIVE === */
+    @media (max-width: 480px) {
+      .avatar { width: 96px; height: 96px; font-size: 2.1rem; }
+      .name { font-size: 1.6rem; }
+      .bio { font-size: 0.95rem; }
+      .link { padding: 0.9rem 1.2rem; }
+      .icon { width: 40px; height: 40px; font-size: 1.3rem; }
+    }
 
-        .link-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.2rem;
-        }
+    /* === ACCESSIBILITY === */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
 
-        .link-subtitle {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
+    .link:focus-visible {
+      outline: 2px solid #667eea;
+      outline-offset: 2px;
+      z-index: 1;
+    }
 
-        .link-arrow {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            transition: transform 0.3s ease;
-            position: relative;
-            z-index: 1;
-        }
-
-        .link-card:hover .link-arrow {
-            transform: translateX(5px);
-            color: var(--text-primary);
-        }
-
-        /* Footer */
-        .footer {
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        .footer-heart {
-            color: #e6683c;
-            animation: heartbeat 1.5s ease-in-out infinite;
-        }
-
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 480px) {
-            body {
-                padding: 1.5rem 1rem;
-            }
-
-            .profile-image-container {
-                width: 100px;
-                height: 100px;
-            }
-
-            .profile-name {
-                font-size: 1.5rem;
-            }
-
-            .profile-bio {
-                font-size: 0.95rem;
-            }
-
-            .link-card {
-                padding: 0.9rem 1.2rem;
-            }
-
-            .link-icon {
-                width: 42px;
-                height: 42px;
-                font-size: 1.3rem;
-            }
-
-            .link-title {
-                font-size: 1rem;
-            }
-        }
-
-        /* Accessibility */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
-        .link-card:focus-visible {
-            outline: 2px solid #667eea;
-            outline-offset: 2px;
-        }
-    </style>
+    /* === LIGHT TOUCH JS ENHANCEMENTS (INLINE) === */
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Profile Section -->
-        <section class="profile-section">
-            <div class="profile-image-container">
-                <div class="profile-image">
-                    <i class="fas fa-user"></i>
-                </div>
-            </div>
-            <h1 class="profile-name">Yusif Muradli</h1>
-            <p class="profile-bio">cox az gulmeli, birazda trajedik</p>
-        </section>
+  <div class="container">
+    <div class="avatar">👤</div>
+    <h1 class="name">Yusif Muradli</h1>
+    <p class="bio">cox az gulmeli, birazda trajedik</p>
 
-        <!-- Links Section -->
-        <section class="links-section">
-            <a href="https://instagram.com/yusifmuradlieon" 
-               class="link-card" 
-               target="_blank" 
-               rel="noopener noreferrer"
-               aria-label="Follow me on Instagram">
-                <div class="link-icon instagram">
-                    <i class="fab fa-instagram"></i>
-                </div>
-                <div class="link-text">
-                    <div class="link-title">Instagram</div>
-                    <div class="link-subtitle">@yusifmuradlieon</div>
-                </div>
-                <div class="link-arrow">
-                    <i class="fas fa-arrow-right"></i>
-                </div>
-            </a>
+    <div class="links">
+      <a href="https://instagram.com/yusifmuradlieon" class="link" target="_blank" rel="noopener" aria-label="Instagram: @yusifmuradlieon">
+        <div class="icon instagram">📸</div>
+        <div class="info">
+          <div class="title">Instagram</div>
+          <div class="handle">@yusifmuradlieon</div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
 
-            <a href="https://tiktok.com/@yusifmuradliaevix" 
-               class="link-card" 
-               target="_blank" 
-               rel="noopener noreferrer"
-               aria-label="Follow me on TikTok">
-                <div class="link-icon tiktok">
-                    <i class="fab fa-tiktok"></i>
-                </div>
-                <div class="link-text">
-                    <div class="link-title">TikTok</div>
-                    <div class="link-subtitle">@yusifmuradliaevix</div>
-                </div>
-                <div class="link-arrow">
-                    <i class="fas fa-arrow-right"></i>
-                </div>
-            </a>
+      <a href="https://tiktok.com/@yusifmuradliaevix" class="link" target="_blank" rel="noopener" aria-label="TikTok: @yusifmuradliaevix">
+        <div class="icon tiktok">🎵</div>
+        <div class="info">
+          <div class="title">TikTok</div>
+          <div class="handle">@yusifmuradliaevix</div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
 
-            <a href="https://t.me/yusifmuradlimonster" 
-               class="link-card" 
-               target="_blank" 
-               rel="noopener noreferrer"
-               aria-label="Message me on Telegram">
-                <div class="link-icon telegram">
-                    <i class="fab fa-telegram-plane"></i>
-                </div>
-                <div class="link-text">
-                    <div class="link-title">Telegram</div>
-                    <div class="link-subtitle">@yusifmuradlimonster</div>
-                </div>
-                <div class="link-arrow">
-                    <i class="fas fa-arrow-right"></i>
-                </div>
-            </a>
+      <a href="https://t.me/yusifmuradlimonster" class="link" target="_blank" rel="noopener" aria-label="Telegram: @yusifmuradlimonster">
+        <div class="icon telegram">✈️</div>
+        <div class="info">
+          <div class="title">Telegram</div>
+          <div class="handle">@yusifmuradlimonster</div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
 
-            <a href="https://discord.com/users/yusifmuradli.dharma" 
-               class="link-card" 
-               target="_blank" 
-               rel="noopener noreferrer"
-               aria-label="Connect with me on Discord">
-                <div class="link-icon discord">
-                    <i class="fab fa-discord"></i>
-                </div>
-                <div class="link-text">
-                    <div class="link-title">Discord</div>
-                    <div class="link-subtitle">@yusifmuradli.dharma</div>
-                </div>
-                <div class="link-arrow">
-                    <i class="fas fa-arrow-right"></i>
-                </div>
-            </a>
-        </section>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <p>&copy; 2026 Yusif Muradli.<span class="footer-heart">❤</span></p>
-        </footer>
+      <a href="https://discord.com/users/yusifmuradli.dharma" class="link" target="_blank" rel="noopener" aria-label="Discord: @yusifmuradli.dharma">
+        <div class="icon discord">💬</div>
+        <div class="info">
+          <div class="title">Discord</div>
+          <div class="handle">@yusifmuradli.dharma</div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
     </div>
 
-    <script>
-        // Add subtle parallax effect to cards on mouse move
-        document.addEventListener('mousemove', (e) => {
-            const cards = document.querySelectorAll('.link-card');
-            const mouseX = e.clientX / window.innerWidth - 0.5;
-            const mouseY = e.clientY / window.innerHeight - 0.5;
+    <footer class="footer">
+      &copy; 2026 Yusf. ❤
+    </footer>
+  </div>
 
-            cards.forEach((card, index) => {
-                const speed = (index + 1) * 2;
-                const x = mouseX * speed;
-                const y = mouseY * speed;
-                
-                if (window.matchMedia('(hover: hover)').matches) {
-                    card.style.transform = `translate(${x}px, ${y}px)`;
-                }
-            });
-        });
+  <!-- Minimal JS for subtle interactivity (optional but lightweight) -->
+  <script>
+    // Optional: Add slight hover lift without heavy parallax
+    document.querySelectorAll('.link').forEach(link => {
+      link.addEventListener('mouseenter', () => {
+        if (window.matchMedia('(hover: hover)').matches) {
+          link.style.transform = 'translateY(-3px)';
+        }
+      });
+      link.addEventListener('mouseleave', () => {
+        link.style.transform = '';
+      });
+    });
 
-        // Reset card positions on mouse leave
-        document.addEventListener('mouseleave', () => {
-            const cards = document.querySelectorAll('.link-card');
-            cards.forEach(card => {
-                card.style.transform = 'translate(0, 0)';
-            });
-        });
-
-        // Add click ripple effect
-        document.querySelectorAll('.link-card').forEach(card => {
-            card.addEventListener('click', function(e) {
-                const ripple = document.createElement('span');
-                const rect = this.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                const x = e.clientX - rect.left - size / 2;
-                const y = e.clientY - rect.top - size / 2;
-
-                ripple.style.cssText = `
-                    position: absolute;
-                    width: ${size}px;
-                    height: ${size}px;
-                    left: ${x}px;
-                    top: ${y}px;
-                    background: rgba(255, 255, 255, 0.3);
-                    border-radius: 50%;
-                    transform: scale(0);
-                    animation: ripple 0.6s ease-out;
-                    pointer-events: none;
-                `;
-
-                this.appendChild(ripple);
-
-                setTimeout(() => ripple.remove(), 600);
-            });
-        });
-
-        // Add ripple animation dynamically
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Console message for developers
-        console.log('%c👋 Hello Developer!', 'color: #667eea; font-size: 20px; font-weight: bold;');
-        console.log('%cInterested in the code? Feel free to explore!', 'color: #a0a0b0; font-size: 14px;');
-    </script>
+    // Friendly console note
+    console.log('%c 👋 cox az gulmeli, birazda trajedik.', 'color: #764ba2; font-size: 16px; font-weight: bold;');
+  </script>
 </body>
 </html>
