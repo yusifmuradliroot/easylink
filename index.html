@@ -1,107 +1,452 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>EasyLink — Yusf</title>
-  <style>
-    /* === GLOBAL RESET & THEME === */
-    :root {
-      --bg: #0f0f1b;
-      --fg: #e6e6ff;
-      --accent: #4d5bff;
-      --card-bg: #1a1a2e;
-      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yusf'easylink</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --bg-card-hover: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
 
-    body {
-      background-color: var(--bg);
-      color: var(--fg);
-      font-family: var(--font-main);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      line-height: 1.6;
-    }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-    /* === HEADER === */
-    .header {
-      text-align: center;
-      margin-bottom: 2.5rem;
-    }
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
+            animation: bgRotate 30s linear infinite;
+            z-index: -1;
+        }
 
-    .name {
-      font-size: 2.4rem;
-      font-weight: 800;
-      background: linear-gradient(to right, #a78bfa, #4d5bff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      letter-spacing: -0.5px;
-    }
+        @keyframes bgRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-    .subtitle {
-      font-size: 0.95rem;
-      opacity: 0.7;
-      margin-top: 0.4rem;
-    }
+        .container {
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+        }
 
-    /* === LINK CARDS === */
-    .links {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      width: 100%;
-      max-width: 400px;
-    }
+        /* Profile Section */
+        .profile-section {
+            margin-bottom: 2.5rem;
+        }
 
-    .link-item {
-      display: block;
-      padding: 1rem;
-      background: var(--card-bg);
-      border-radius: 12px;
-      text-decoration: none;
-      color: var(--fg);
-      font-weight: 500;
-      text-align: center;
-      transition: all 0.25s ease;
-      border: 1px solid transparent;
-    }
+        .profile-image-container {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.5rem;
+            position: relative;
+        }
 
-    .link-item:hover {
-      transform: translateY(-2px);
-      border-color: var(--accent);
-      box-shadow: 0 4px 12px rgba(77, 91, 255, 0.15);
-    }
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            box-shadow: var(--shadow);
+        }
 
-    /* === RESPONSIVE === */
-    @media (max-width: 480px) {
-      .name { font-size: 2rem; }
-      body { padding: 1.5rem; }
-    }
-  </style>
+        .profile-name {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-bio {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        /* Links Section */
+        .links-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .link-card {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-card-hover);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .link-card:hover {
+            transform: translateY(-3px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.2);
+        }
+
+        .link-card:hover::before {
+            opacity: 1;
+        }
+
+        .link-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .link-icon.instagram {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+
+        .link-icon.tiktok {
+            background: linear-gradient(45deg, #000000, #25f4ee, #fe2c55);
+        }
+
+        .link-icon.telegram {
+            background: linear-gradient(45deg, #0088cc, #0066aa);
+        }
+
+        .link-icon.discord {
+            background: linear-gradient(45deg, #5865f2, #4752c4);
+        }
+
+        .link-text {
+            flex: 1;
+            text-align: left;
+            position: relative;
+            z-index: 1;
+        }
+
+        .link-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .link-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .link-arrow {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .link-card:hover .link-arrow {
+            transform: translateX(5px);
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer-heart {
+            color: #e6683c;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            body {
+                padding: 1.5rem 1rem;
+            }
+
+            .profile-image-container {
+                width: 100px;
+                height: 100px;
+            }
+
+            .profile-name {
+                font-size: 1.5rem;
+            }
+
+            .profile-bio {
+                font-size: 0.95rem;
+            }
+
+            .link-card {
+                padding: 0.9rem 1.2rem;
+            }
+
+            .link-icon {
+                width: 42px;
+                height: 42px;
+                font-size: 1.3rem;
+            }
+
+            .link-title {
+                font-size: 1rem;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        .link-card:focus-visible {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+    </style>
 </head>
 <body>
-  <div class="header">
-    <div class="name">Yusf</div>
-    <div class="subtitle">Content creator • Standoff2 • Original audio</div>
-  </div>
+    <div class="container">
+        <!-- Profile Section -->
+        <section class="profile-section">
+            <div class="profile-image-container">
+                <div class="profile-image">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+            <h1 class="profile-name">Yusif Muradli</h1>
+            <p class="profile-bio">cox az gulmeli, birazda trajedik</p>
+        </section>
 
-  <div class="links">
-    <!-- Replace these with your actual links -->
-    <a href="https://discord.com/users/..." class="link-item">Discord</a>
-    <a href="https://youtube.com/@..." class="link-item">YouTube</a>
-    <a href="https://standoff2.com/profile/..." class="link-item">Standoff2</a>
-    <a href="https://github.com/Yusf" class="link-item">GitHub</a>
-  </div>
+        <!-- Links Section -->
+        <section class="links-section">
+            <a href="https://instagram.com/yusifmuradlieon" 
+               class="link-card" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               aria-label="Follow me on Instagram">
+                <div class="link-icon instagram">
+                    <i class="fab fa-instagram"></i>
+                </div>
+                <div class="link-text">
+                    <div class="link-title">Instagram</div>
+                    <div class="link-subtitle">@yusifmuradlieon</div>
+                </div>
+                <div class="link-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <a href="https://tiktok.com/@yusifmuradliaevix" 
+               class="link-card" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               aria-label="Follow me on TikTok">
+                <div class="link-icon tiktok">
+                    <i class="fab fa-tiktok"></i>
+                </div>
+                <div class="link-text">
+                    <div class="link-title">TikTok</div>
+                    <div class="link-subtitle">@yusifmuradliaevix</div>
+                </div>
+                <div class="link-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <a href="https://t.me/yusifmuradlimonster" 
+               class="link-card" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               aria-label="Message me on Telegram">
+                <div class="link-icon telegram">
+                    <i class="fab fa-telegram-plane"></i>
+                </div>
+                <div class="link-text">
+                    <div class="link-title">Telegram</div>
+                    <div class="link-subtitle">@yusifmuradlimonster</div>
+                </div>
+                <div class="link-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <a href="https://discord.com/users/yusifmuradli.dharma" 
+               class="link-card" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               aria-label="Connect with me on Discord">
+                <div class="link-icon discord">
+                    <i class="fab fa-discord"></i>
+                </div>
+                <div class="link-text">
+                    <div class="link-title">Discord</div>
+                    <div class="link-subtitle">@yusifmuradli.dharma</div>
+                </div>
+                <div class="link-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </a>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2026 Yusif Muradli.<span class="footer-heart">❤</span></p>
+        </footer>
+    </div>
+
+    <script>
+        // Add subtle parallax effect to cards on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.link-card');
+            const mouseX = e.clientX / window.innerWidth - 0.5;
+            const mouseY = e.clientY / window.innerHeight - 0.5;
+
+            cards.forEach((card, index) => {
+                const speed = (index + 1) * 2;
+                const x = mouseX * speed;
+                const y = mouseY * speed;
+                
+                if (window.matchMedia('(hover: hover)').matches) {
+                    card.style.transform = `translate(${x}px, ${y}px)`;
+                }
+            });
+        });
+
+        // Reset card positions on mouse leave
+        document.addEventListener('mouseleave', () => {
+            const cards = document.querySelectorAll('.link-card');
+            cards.forEach(card => {
+                card.style.transform = 'translate(0, 0)';
+            });
+        });
+
+        // Add click ripple effect
+        document.querySelectorAll('.link-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${x}px;
+                    top: ${y}px;
+                    background: rgba(255, 255, 255, 0.3);
+                    border-radius: 50%;
+                    transform: scale(0);
+                    animation: ripple 0.6s ease-out;
+                    pointer-events: none;
+                `;
+
+                this.appendChild(ripple);
+
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Add ripple animation dynamically
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Console message for developers
+        console.log('%c👋 Hello Developer!', 'color: #667eea; font-size: 20px; font-weight: bold;');
+        console.log('%cInterested in the code? Feel free to explore!', 'color: #a0a0b0; font-size: 14px;');
+    </script>
 </body>
 </html>
