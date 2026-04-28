@@ -1,960 +1,107 @@
---- index.html (原始)
-
-
-+++ index.html (修改后)
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyLink | Yusf</title>
-    <meta name="description" content="Personal link hub - Content creator • Standoff2 • Original audio">
-
-    <!-- Optional: IBM Plex Mono for tech-inspired monospace look (falls back to system fonts) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-
-    <style>
-        /* ============================================
-           CSS VARIABLES & THEME CONFIGURATION
-           EasyLink - Personal Theme by Yusf
-           ============================================ */
-        :root {
-            /* Deep space blue/purple palette with neon accents */
-            --bg-deep: #050508;
-            --bg-dark: #0a0a12;
-            --bg-card: rgba(15, 15, 25, 0.6);
-            --bg-card-hover: rgba(25, 25, 40, 0.8);
-
-            /* Neon accent colors */
-            --neon-cyan: #00f5ff;
-            --neon-magenta: #ff2a9d;
-            --neon-purple: #9d4edd;
-            --neon-blue: #3a86ff;
-
-            /* Text colors */
-            --text-primary: #ffffff;
-            --text-secondary: #8892b0;
-            --text-muted: #5a6478;
-
-            /* Borders & effects */
-            --border-subtle: rgba(100, 100, 150, 0.15);
-            --border-glow: rgba(0, 245, 255, 0.4);
-            --glow-cyan: 0 0 20px rgba(0, 245, 255, 0.3);
-            --glow-magenta: 0 0 20px rgba(255, 42, 157, 0.3);
-
-            /* Typography - Monospace for tech feel */
-            --font-mono: 'IBM Plex Mono', 'SF Mono', 'Fira Code', Consolas, monospace;
-            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        }
-
-        /* Auto-switch to light mode if user prefers (optional - can be removed) */
-        @media (prefers-color-scheme: light) {
-            :root {
-                --bg-deep: #f8f9fa;
-                --bg-dark: #ffffff;
-                --bg-card: rgba(240, 240, 250, 0.8);
-                --bg-card-hover: rgba(230, 230, 245, 0.9);
-                --text-primary: #0a0a12;
-                --text-secondary: #4a5568;
-                --text-muted: #718096;
-                --border-subtle: rgba(50, 50, 80, 0.15);
-            }
-        }
-
-        /* ============================================
-           BASE STYLES & RESET
-           ============================================ */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            font-size: 16px;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: var(--font-sans);
-            background: var(--bg-deep);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 1.25rem;
-            position: relative;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* ============================================
-           ANIMATED BACKGROUND PARTICLES
-           Lightweight floating particles effect
-           ============================================ */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--neon-cyan);
-            border-radius: 50%;
-            opacity: 0.3;
-            animation: float-up linear infinite;
-        }
-
-        .particle:nth-child(odd) {
-            background: var(--neon-magenta);
-            animation-duration: 15s;
-            animation-delay: 0s;
-        }
-
-        .particle:nth-child(even) {
-            background: var(--neon-cyan);
-            animation-duration: 20s;
-            animation-delay: -5s;
-        }
-
-        .particle:nth-child(3n) {
-            background: var(--neon-purple);
-            animation-duration: 18s;
-            animation-delay: -10s;
-        }
-
-        @keyframes float-up {
-            0% {
-                transform: translateY(100vh) scale(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.3;
-            }
-            90% {
-                opacity: 0.3;
-            }
-            100% {
-                transform: translateY(-100px) scale(1);
-                opacity: 0;
-            }
-        }
-
-        /* Subtle gradient overlay */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background:
-                radial-gradient(ellipse at 20% 30%, rgba(0, 245, 255, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 70%, rgba(255, 42, 157, 0.08) 0%, transparent 50%);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        /* ============================================
-           MAIN CONTAINER
-           ============================================ */
-        .container {
-            max-width: 480px;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* ============================================
-           HEADER SECTION - NAME & SUBTITLE
-           ============================================ */
-        .header {
-            text-align: center;
-            margin-bottom: 2.5rem;
-        }
-
-        .name {
-            font-family: var(--font-mono);
-            font-size: 2.5rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-bottom: 0.75rem;
-            position: relative;
-            display: inline-block;
-            /* Elegant gradient text effect */
-            background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 50%, var(--neon-magenta) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            /* Subtle glow */
-            filter: drop-shadow(0 0 8px rgba(0, 245, 255, 0.3));
-        }
-
-        /* Underline accent */
-        .name::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
-            border-radius: 2px;
-        }
-
-        .subtitle {
-            font-family: var(--font-mono);
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            letter-spacing: 0.05em;
-            margin-top: 1rem;
-            opacity: 0.9;
-        }
-
-        .subtitle span {
-            color: var(--neon-cyan);
-        }
-
-        /* ============================================
-           LINKS SECTION - CARDS
-           ============================================ */
-        .links {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .link-card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1.125rem 1.25rem;
-            background: var(--bg-card);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            text-decoration: none;
-            color: var(--text-primary);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        /* Hover effect - scale up + glow border */
-        .link-card:hover {
-            transform: translateY(-2px) scale(1.01);
-            background: var(--bg-card-hover);
-            border-color: var(--border-glow);
-            box-shadow: var(--glow-cyan);
-        }
-
-        /* Card content layout */
-        .link-content {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex: 1;
-        }
-
-        /* Icon container with platform-specific gradients */
-        .link-icon {
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            font-size: 1.25rem;
-            flex-shrink: 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Platform-specific icon backgrounds */
-        .link-icon.discord {
-            background: linear-gradient(135deg, #5865f2, #404eed);
-        }
-
-        .link-icon.youtube {
-            background: linear-gradient(135deg, #ff0000, #cc0000);
-        }
-
-        .link-icon.standoff2 {
-            background: linear-gradient(135deg, #ff9500, #ff6b00);
-        }
-
-        .link-icon.instagram {
-            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366);
-        }
-
-        .link-icon.telegram {
-            background: linear-gradient(135deg, #0088cc, #0066aa);
-        }
-
-        .link-icon.tiktok {
-            background: linear-gradient(135deg, #000000, #25f4ee, #fe2c55);
-        }
-
-        .link-icon.github {
-            background: linear-gradient(135deg, #333333, #24292e);
-        }
-
-        .link-icon.twitter {
-            background: linear-gradient(135deg, #1da1f2, #0d8ecf);
-        }
-
-        /* Text content */
-        .link-text {
-            flex: 1;
-            min-width: 0; /* Prevent text overflow */
-        }
-
-        .link-title {
-            font-family: var(--font-mono);
-            font-size: 0.95rem;
-            font-weight: 500;
-            letter-spacing: 0.02em;
-            margin-bottom: 0.125rem;
-        }
-
-        .link-card:hover .link-title {
-            color: var(--neon-cyan);
-        }
-
-        .link-url {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Right side - arrow + copy button */
-        .link-actions {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .link-arrow {
-            font-size: 1rem;
-            color: var(--text-muted);
-            transition: all 0.3s ease;
-            opacity: 0.7;
-        }
-
-        .link-card:hover .link-arrow {
-            color: var(--neon-cyan);
-            opacity: 1;
-            transform: translateX(4px);
-        }
-
-        /* Copy button */
-        .copy-btn {
-            background: transparent;
-            border: 1px solid var(--border-subtle);
-            border-radius: 6px;
-            padding: 0.375rem 0.5rem;
-            cursor: pointer;
-            color: var(--text-muted);
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            transition: all 0.2s ease;
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .link-card:hover .copy-btn {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .copy-btn:hover {
-            border-color: var(--neon-cyan);
-            color: var(--neon-cyan);
-            background: rgba(0, 245, 255, 0.1);
-        }
-
-        .copy-btn.copied {
-            background: var(--neon-cyan);
-            color: var(--bg-deep);
-            border-color: var(--neon-cyan);
-        }
-
-        /* ============================================
-           TOAST NOTIFICATION
-           ============================================ */
-        .toast {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--bg-card-hover);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-glow);
-            border-radius: 10px;
-            padding: 0.75rem 1.5rem;
-            font-family: var(--font-mono);
-            font-size: 0.875rem;
-            color: var(--text-primary);
-            box-shadow: var(--glow-cyan);
-            z-index: 1000;
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: none;
-        }
-
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-
-        .toast-icon {
-            margin-right: 0.5rem;
-            color: var(--neon-cyan);
-        }
-
-        /* ============================================
-           SOUND TOGGLE BUTTON
-           ============================================ */
-        .sound-toggle {
-            position: fixed;
-            top: 1.5rem;
-            right: 1.5rem;
-            background: var(--bg-card);
-            backdrop-filter: blur(8px);
-            border: 1px solid var(--border-subtle);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: var(--text-muted);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            z-index: 100;
-        }
-
-        .sound-toggle:hover {
-            border-color: var(--neon-cyan);
-            color: var(--neon-cyan);
-            box-shadow: var(--glow-cyan);
-        }
-
-        .sound-toggle.active {
-            color: var(--neon-cyan);
-            border-color: var(--neon-cyan);
-        }
-
-        /* ============================================
-           FOOTER
-           ============================================ */
-        .footer {
-            margin-top: 3rem;
-            text-align: center;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            letter-spacing: 0.05em;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border-subtle);
-        }
-
-        .footer a {
-            color: var(--neon-cyan);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .footer a:hover {
-            color: var(--neon-magenta);
-        }
-
-        /* ============================================
-           RESPONSIVE DESIGN
-           ============================================ */
-        @media (max-width: 480px) {
-            body {
-                padding: 1.5rem 1rem;
-            }
-
-            .name {
-                font-size: 2rem;
-                letter-spacing: 0.08em;
-            }
-
-            .subtitle {
-                font-size: 0.8125rem;
-            }
-
-            .link-card {
-                padding: 1rem 1.125rem;
-            }
-
-            .link-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 1.125rem;
-            }
-
-            .link-title {
-                font-size: 0.875rem;
-            }
-
-            .copy-btn {
-                display: none; /* Hide copy button on mobile to save space */
-            }
-
-            .sound-toggle {
-                top: 1rem;
-                right: 1rem;
-                width: 36px;
-                height: 36px;
-            }
-        }
-
-        /* ============================================
-           ACCESSIBILITY - REDUCED MOTION
-           ============================================ */
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-
-            .particle {
-                display: none;
-            }
-        }
-
-        /* Focus styles for keyboard navigation */
-        .link-card:focus-visible {
-            outline: 2px solid var(--neon-cyan);
-            outline-offset: 2px;
-        }
-
-        .sound-toggle:focus-visible {
-            outline: 2px solid var(--neon-cyan);
-            outline-offset: 2px;
-        }
-
-        .copy-btn:focus-visible {
-            outline: 2px solid var(--neon-cyan);
-            outline-offset: 2px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EasyLink — Yusf</title>
+  <style>
+    /* === GLOBAL RESET & THEME === */
+    :root {
+      --bg: #0f0f1b;
+      --fg: #e6e6ff;
+      --accent: #4d5bff;
+      --card-bg: #1a1a2e;
+      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+
+    /* === HEADER === */
+    .header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .name {
+      font-size: 2.4rem;
+      font-weight: 800;
+      background: linear-gradient(to right, #a78bfa, #4d5bff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      opacity: 0.7;
+      margin-top: 0.4rem;
+    }
+
+    /* === LINK CARDS === */
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .link-item {
+      display: block;
+      padding: 1rem;
+      background: var(--card-bg);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--fg);
+      font-weight: 500;
+      text-align: center;
+      transition: all 0.25s ease;
+      border: 1px solid transparent;
+    }
+
+    .link-item:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+      box-shadow: 0 4px 12px rgba(77, 91, 255, 0.15);
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 480px) {
+      .name { font-size: 2rem; }
+      body { padding: 1.5rem; }
+    }
+  </style>
 </head>
 <body>
-    <!-- Floating particles background -->
-    <div class="particles" id="particles">
-        <!-- Particles generated by JS -->
-    </div>
+  <div class="header">
+    <div class="name">Yusf</div>
+    <div class="subtitle">Content creator • Standoff2 • Original audio</div>
+  </div>
 
-    <!-- Sound toggle button (top right) -->
-    <button class="sound-toggle" id="soundToggle" aria-label="Toggle sound effects" title="Toggle hover sounds">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-        </svg>
-    </button>
-
-    <div class="container">
-        <!-- Header: Name & Subtitle -->
-        <header class="header">
-            <h1 class="name">YUSF</h1>
-            <p class="subtitle">Content creator <span>•</span> Standoff2 <span>•</span> Original audio</p>
-        </header>
-
-        <!-- Links Section -->
-        <nav class="links" id="links">
-            <!-- Discord -->
-            <a href="https://discord.com/users/yusifmuradli.dharma-discord"
-               class="link-card"
-               target="_blank"
-               rel="noopener noreferrer"
-               data-url="https://discord.com/users/yusifmuradli.dharma-discord"
-               aria-label="Open Discord profile">
-                <div class="link-content">
-                    <div class="link-icon discord">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
-                            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
-                        </svg>
-                    </div>
-                    <div class="link-text">
-                        <div class="link-title">Discord</div>
-                        <div class="link-url">Add me on Discord</div>
-                    </div>
-                </div>
-                <div class="link-actions">
-                    <span class="link-arrow">→</span>
-                    <button class="copy-btn" data-action="copy">Copy</button>
-                </div>
-            </a>
-
-            <!-- YouTube -->
-            <a href="https://youtube.com/@yourchannel"
-               class="link-card"
-               target="_blank"
-               rel="noopener noreferrer"
-               data-url="https://youtube.com/@yourchannel"
-               aria-label="Open YouTube channel">
-                <div class="link-content">
-                    <div class="link-icon youtube">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
-                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                        </svg>
-                    </div>
-                    <div class="link-text">
-                        <div class="link-title">YouTube</div>
-                        <div class="link-url">Subscribe to my channel</div>
-                    </div>
-                </div>
-                <div class="link-actions">
-                    <span class="link-arrow">→</span>
-                    <button class="copy-btn" data-action="copy">Copy</button>
-                </div>
-            </a>
-
-            <!-- Standoff2 Profile -->
-            <a href="https://standoff2.com/profile/yourusername"
-               class="link-card"
-               target="_blank"
-               rel="noopener noreferrer"
-               data-url="https://standoff2.com/profile/yourusername"
-               aria-label="View Standoff2 profile">
-                <div class="link-content">
-                    <div class="link-icon standoff2">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-                        </svg>
-                    </div>
-                    <div class="link-text">
-                        <div class="link-title">Standoff2</div>
-                        <div class="link-url">View my gaming profile</div>
-                    </div>
-                </div>
-                <div class="link-actions">
-                    <span class="link-arrow">→</span>
-                    <button class="copy-btn" data-action="copy">Copy</button>
-                </div>
-            </a>
-
-            <!-- Instagram -->
-            <a href="https://instagram.com/yusifmuradlieon-instagram"
-               class="link-card"
-               target="_blank"
-               rel="noopener noreferrer"
-               data-url="https://instagram.com/yusifmuradlieon-instagram"
-               aria-label="Open Instagram profile">
-                <div class="link-content">
-                    <div class="link-icon instagram">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                        </svg>
-                    </div>
-                    <div class="link-text">
-                        <div class="link-title">Instagram</div>
-                        <div class="link-url">@yusifmuradlieon-instagram</div>
-                    </div>
-                </div>
-                <div class="link-actions">
-                    <span class="link-arrow">→</span>
-                    <button class="copy-btn" data-action="copy">Copy</button>
-                </div>
-            </a>
-
-            <!-- Telegram -->
-            <a href="https://t.me/yusifmuradlimonster-telegram"
-               class="link-card"
-               target="_blank"
-               rel="noopener noreferrer"
-               data-url="https://t.me/yusifmuradlimonster-telegram"
-               aria-label="Open Telegram profile">
-                <div class="link-content">
-                    <div class="link-icon telegram">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
-                            <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-                        </svg>
-                    </div>
-                    <div class="link-text">
-                        <div class="link-title">Telegram</div>
-                        <div class="link-url">@yusifmuradlimonster-telegram</div>
-                    </div>
-                </div>
-                <div class="link-actions">
-                    <span class="link-arrow">→</span>
-                    <button class="copy-btn" data-action="copy">Copy</button>
-                </div>
-            </a>
-        </nav>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <p>© 2024 <a href="#">Yusf</a>. All rights reserved.</p>
-            <p style="margin-top: 0.5rem; opacity: 0.7;">EasyLink v2.0</p>
-        </footer>
-    </div>
-
-    <!-- Toast Notification -->
-    <div class="toast" id="toast">
-        <span class="toast-icon">✓</span>
-        <span class="toast-message">Link copied to clipboard!</span>
-    </div>
-
-    <script>
-        /**
-         * EasyLink - Personal Link Hub
-         * Vanilla JavaScript for interactivity
-         * Author: Yusf
-         */
-
-        // ============================================
-        // CONFIGURATION
-        // ============================================
-        const CONFIG = {
-            particleCount: 20,          // Number of floating particles
-            soundEnabled: false,         // Sound effects disabled by default
-            toastDuration: 2000,         // Toast notification duration (ms)
-        };
-
-        // ============================================
-        // PARTICLE SYSTEM
-        // Lightweight floating particles in background
-        // ============================================
-        function initParticles() {
-            const container = document.getElementById('particles');
-            if (!container) return;
-
-            for (let i = 0; i < CONFIG.particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-
-                // Random positioning
-                particle.style.left = `${Math.random() * 100}%`;
-                particle.style.animationDelay = `${Math.random() * 20}s`;
-                particle.style.animationDuration = `${15 + Math.random() * 10}s`;
-
-                // Random size variation
-                const size = 2 + Math.random() * 4;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-
-                container.appendChild(particle);
-            }
-        }
-
-        // ============================================
-        // SOUND EFFECTS
-        // Subtle hover sounds (toggleable, off by default)
-        // ============================================
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        let audioCtx = null;
-
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new AudioContext();
-            }
-        }
-
-        function playHoverSound() {
-            if (!CONFIG.soundEnabled || !audioCtx) return;
-
-            // Create a subtle high-frequency beep
-            const oscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-
-            oscillator.frequency.value = 800; // Hz
-            oscillator.type = 'sine';
-
-            gainNode.gain.setValueAtTime(0.02, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-
-            oscillator.start(audioCtx.currentTime);
-            oscillator.stop(audioCtx.currentTime + 0.1);
-        }
-
-        function playClickSound() {
-            if (!CONFIG.soundEnabled || !audioCtx) return;
-
-            const oscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-
-            oscillator.frequency.value = 1200;
-            oscillator.type = 'sine';
-
-            gainNode.gain.setValueAtTime(0.03, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
-
-            oscillator.start(audioCtx.currentTime);
-            oscillator.stop(audioCtx.currentTime + 0.15);
-        }
-
-        // ============================================
-        // TOAST NOTIFICATIONS
-        // ============================================
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            const toastMessage = toast.querySelector('.toast-message');
-
-            toastMessage.textContent = message;
-            toast.classList.add('show');
-
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, CONFIG.toastDuration);
-        }
-
-        // ============================================
-        // COPY TO CLIPBOARD
-        // ============================================
-        async function copyToClipboard(text, button) {
-            try {
-                await navigator.clipboard.writeText(text);
-
-                // Visual feedback on button
-                button.textContent = 'Copied!';
-                button.classList.add('copied');
-
-                showToast('Link copied to clipboard!');
-
-                // Reset button after delay
-                setTimeout(() => {
-                    button.textContent = 'Copy';
-                    button.classList.remove('copied');
-                }, 2000);
-
-            } catch (err) {
-                console.error('Failed to copy:', err);
-                showToast('Failed to copy link');
-            }
-        }
-
-        // ============================================
-        // SOUND TOGGLE
-        // ============================================
-        function toggleSound() {
-            const toggle = document.getElementById('soundToggle');
-            CONFIG.soundEnabled = !CONFIG.soundEnabled;
-
-            toggle.classList.toggle('active');
-
-            if (CONFIG.soundEnabled) {
-                initAudio();
-                // Resume audio context if suspended (browser policy)
-                if (audioCtx && audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
-                toggle.title = 'Sound effects ON';
-                toggle.setAttribute('aria-label', 'Sound effects enabled, click to disable');
-            } else {
-                toggle.title = 'Sound effects OFF';
-                toggle.setAttribute('aria-label', 'Sound effects disabled, click to enable');
-            }
-
-            localStorage.setItem('easylink_sound', CONFIG.soundEnabled);
-        }
-
-        // ============================================
-        // EVENT LISTENERS
-        // ============================================
-        function initEventListeners() {
-            // Sound toggle
-            const soundToggle = document.getElementById('soundToggle');
-            if (soundToggle) {
-                soundToggle.addEventListener('click', toggleSound);
-            }
-
-            // Link cards - hover sounds and click sounds
-            const linkCards = document.querySelectorAll('.link-card');
-
-            linkCards.forEach(card => {
-                // Hover sound
-                card.addEventListener('mouseenter', playHoverSound);
-
-                // Click sound (for the card itself, not just links)
-                card.addEventListener('click', (e) => {
-                    // Only play if not clicking the copy button
-                    if (!e.target.closest('.copy-btn')) {
-                        playClickSound();
-                    }
-                });
-
-                // Copy button functionality
-                const copyBtn = card.querySelector('.copy-btn');
-                if (copyBtn) {
-                    copyBtn.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        const url = card.getAttribute('data-url');
-                        if (url) {
-                            copyToClipboard(url, copyBtn);
-                            playClickSound();
-                        }
-                    });
-                }
-            });
-
-            // Restore sound preference from localStorage
-            const savedSound = localStorage.getItem('easylink_sound');
-            if (savedSound === 'true') {
-                CONFIG.soundEnabled = true;
-                if (soundToggle) {
-                    soundToggle.classList.add('active');
-                    soundToggle.title = 'Sound effects ON';
-                }
-                initAudio();
-                if (audioCtx && audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
-            }
-        }
-
-        // ============================================
-        // INITIALIZATION
-        // ============================================
-        document.addEventListener('DOMContentLoaded', () => {
-            initParticles();
-            initEventListeners();
-
-            // Log to console for developers
-            console.log('%c⚡ EasyLink v2.0', 'color: #00f5ff; font-size: 16px; font-weight: bold;');
-            console.log('%cPersonal link hub by Yusf', 'color: #8892b0; font-size: 12px;');
-            console.log('%cTip: Enable sound effects for interactive feedback!', 'color: #ff2a9d; font-size: 11px; font-style: italic;');
-        });
-
-        // Handle visibility change to resume audio context
-        document.addEventListener('visibilitychange', () => {
-            if (!document.hidden && audioCtx && audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-        });
-    </script>
+  <div class="links">
+    <!-- Replace these with your actual links -->
+    <a href="https://discord.com/users/..." class="link-item">Discord</a>
+    <a href="https://youtube.com/@..." class="link-item">YouTube</a>
+    <a href="https://standoff2.com/profile/..." class="link-item">Standoff2</a>
+    <a href="https://github.com/Yusf" class="link-item">GitHub</a>
+  </div>
 </body>
 </html>
